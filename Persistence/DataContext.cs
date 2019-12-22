@@ -19,6 +19,8 @@ namespace Persistence
         //Añadimos las propiedades de los valores para ver y modificar
         public DbSet<Value> Values { get; set; }
 
+        // Añadimos la referencia de las propiedaes para que al realizar la migración se genere la base de datos
+        public DbSet<Activity> Activities {get; set;}
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Value>()

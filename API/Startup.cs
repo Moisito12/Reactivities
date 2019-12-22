@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Activities;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,11 +37,13 @@ namespace API
             // añadir método para la configuración de los cors
             services.AddCors(opt=>
             {
-                opt.AddPolicy("CorsPolicy", policy =>
+                opt.AddPolicy   ("CorsPolicy", policy =>
                 {
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
+            // Se agrega el servicio para la lista de las actividades
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddControllers();
         }
 
