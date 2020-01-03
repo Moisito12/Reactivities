@@ -2,13 +2,14 @@ import React, { useContext } from 'react'
 import { Item, Button, Label, Segment } from 'semantic-ui-react'
 import { observer } from 'mobx-react-lite';
 import ActivityStore from '../../../app/stores/activityStore';
+import { Link } from 'react-router-dom';
 
 // Exportamos las propiedades de las actividades
 // y llamamos en la exportación de las constantes
 
 export const ActivityList: React.FC = () => {
     const activityStore = useContext(ActivityStore);
-    const {activitiesByDate, selectActivity, deleteActivity, submitting, target} = activityStore;
+    const {activitiesByDate, deleteActivity, submitting, target} = activityStore;
     return (
         <Segment clearing>
             <Item.Group divided>
@@ -23,7 +24,7 @@ export const ActivityList: React.FC = () => {
                             </Item.Description>
                             <Item.Extra>
                                 <Button 
-                                    onClick={() => selectActivity(activity.id)} 
+                                    as={Link} to ={`/activities/${activity.id}`}
                                     floated='right' 
                                     content='View' 
                                     color='blue' 
