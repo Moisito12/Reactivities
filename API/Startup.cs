@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Middleware;
 using Application.Activities;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Persistence;
 
 namespace API
@@ -44,15 +39,21 @@ namespace API
             });
             // Se agrega el servicio para la lista de las actividades
             services.AddMediatR(typeof(List.Handler).Assembly);
-            services.AddControllers();
+            services.AddControllers()
+            // Exportamos la validación de los datos que se generó en el archivo create.cs
+            .AddFluentValidation(cfg => 
+            {
+                cfg.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ErroHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
             }
 
             // app.UseHttpsRedirection();

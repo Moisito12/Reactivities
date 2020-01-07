@@ -33,16 +33,16 @@ class ActivityStore {
       const activities = await agent.Activities.list();
       runInAction("load acticitities", () => {
         activities.forEach(activity => {
-          activity.date = activity.date.split(".")[0];
+          activity.date = activity.date.split('T')[0];
           this.activityRegistry.set(activity.id, activity);
         });
         this.loadingInitial = false;
       });
     } catch (error) {
       runInAction("load acticitities error", () => {
-        console.log(error);
         this.loadingInitial = false;
       });
+      console.log(error);
     }
   };
 
@@ -54,12 +54,12 @@ class ActivityStore {
       this.loadingInitial = true;
       try {
         activity = await agent.Activities.details(id);
-        runInAction("getting activity", () => {
+        runInAction("get activity", () => {
           this.activity = activity;
           this.loadingInitial = false;
         });
       } catch (error) {
-        runInAction("getting activity error", () => {
+        runInAction("get activity error", () => {
           this.loadingInitial = false;
         });
         console.log(error);
